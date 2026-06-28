@@ -1,141 +1,90 @@
-# Event Notification System for The British University in Egypt (BUE)
+# Java RMI Publisher-Subscriber Notification System
 
-A distributed Publisher-Subscriber messaging system built with Java RMI (Remote Method Invocation) for the British University in Egypt (BUE). This system allows publishers to send notifications on various topics while subscribers can receive real-time updates on topics they're interested in.
-
-## System Architecture
-
-The system consists of three main components:
-
-### Server Side
-- **BUE Server**: Central message broker that manages publishers, subscribers, and message routing
-- **Server GUI**: Real-time monitoring interface showing system events and connected clients
-
-### Client Side
-- **Publisher Application**: Allows users to publish notifications to specific topics
-- **Subscriber Application**: Enables users to subscribe to topics and receive notifications
-- **Notification Center**: GUI window displaying real-time notifications for subscribers
+A distributed publisher-subscriber notification system built with Java RMI. Publishers send messages to named topics, subscribers choose the topics they care about, and the server routes notifications in real time.
 
 ## Features
 
-- **Real-time Messaging**: Instant notification delivery to subscribed clients
-- **Topic Management**: Pre-defined topics including:
-  - New Courses
-  - Student Activities
-  - Emergency Alerts
-  - Campus News
-- **Message History**: View past messages for subscribed topics
-- **GUI Interfaces**: User-friendly graphical interfaces for both server monitoring and subscriber notifications
-- **Dynamic Registration**: Publishers and subscribers can join/leave the system at runtime
-
-## Prerequisites
-
-- Java JDK 8 or higher
-- Java RMI registry
+- Central Java RMI broker.
+- Publisher registration and deregistration.
+- Subscriber registration and deregistration.
+- Topic-based subscriptions.
+- Real-time message delivery to subscribed clients.
+- Message history by topic.
+- Swing GUI windows for server monitoring and subscriber notifications.
 
 ## Project Structure
 
-```
-├── ServerSide/
-│   ├── BUEServer.java              # Main server implementation
-│   ├── BUEServerGUI.java           # Server monitoring GUI
-│   ├── ServiceInterface.java        # Server remote interface
-│   ├── PublisherInterface.java      # Publisher remote interface
-│   └── SubscriberInterface.java     # Subscriber remote interface
-└── ClientSide/
-    ├── PublisherApp.java           # Publisher client application
-    ├── SubscriberApp.java          # Subscriber client application
-    └── SubscriberNotificationCenter.java  # Subscriber GUI notifications
+```text
+ServerSide/
+  BUEServer.java                  Main server implementation
+  BUEServerGUI.java               Server monitoring GUI
+  ServiceInterface.java           Server remote interface
+  PublisherInterface.java         Publisher callback interface
+  SubscriberInterface.java        Subscriber callback interface
+
+ClientSide/
+  PublisherApp.java               Publisher client
+  SubscriberApp.java              Subscriber client
+  SubscriberNotificationCenter.java
 ```
 
-## Setup and Installation
+## Prerequisites
 
-### 1. Compile the Code
+- Java JDK 8 or newer.
+- A terminal with access to `javac`, `java`, and `rmiregistry`.
+
+## Run
+
+Compile:
+
 ```bash
 javac -d . ServerSide/*.java ClientSide/*.java
 ```
 
-### 2. Start RMI Registry
+Start the RMI registry:
+
 ```bash
 rmiregistry 1099
 ```
 
-### 3. Run the Server
+In a separate terminal, start the server:
+
 ```bash
 java ServerSide.BUEServer
 ```
 
-### 4. Run Publisher Client
+Start one or more publishers:
+
 ```bash
 java ClientSide.PublisherApp
 ```
 
-### 5. Run Subscriber Client
+Start one or more subscribers:
+
 ```bash
 java ClientSide.SubscriberApp
 ```
 
-## Usage Guide
+## Default Topics
 
-### Server Operation
-1. Launch the server first - it will display a GUI showing system events
-2. The server automatically creates an RMI registry on port 1099
-3. Monitor connected publishers and subscribers through the server GUI
+- New Courses
+- Student Activities
+- Emergency Alerts
+- Campus News
 
-### Publisher Usage
-1. Run the publisher application
-2. Enter a unique publisher name when prompted
-3. Choose from available menu options:
-   - **Publish notification**: Select a topic and enter your message
-   - **View all messages**: See all published messages by topic
-   - **Deregister and exit**: Safely disconnect from the system
+## How It Works
 
-### Subscriber Usage
-1. Run the subscriber application
-2. Enter a unique subscriber name when prompted
-3. A notification center window will open automatically
-4. Use the console menu to:
-   - View available topics
-   - Subscribe to topics of interest
-   - Unsubscribe from topics
-   - View your current subscriptions
-   - Review past messages for subscribed topics
-   - Deregister and exit
-
-### Notification Center
-- Displays real-time notifications with timestamps
-- Shows system messages (subscription changes, connection status)
-- Flashes when new notifications arrive while window is not focused
-- Auto-scrolls to show latest messages
-
-## Available Topics
-
-The system comes with four pre-configured topics:
-1. **New Courses** - Academic course announcements
-2. **Student Activities** - Campus events and activities
-3. **Emergency Alerts** - Important safety notifications
-4. **Campus News** - General university news and updates
-
-## Technical Details
-
-- **Communication Protocol**: Java RMI
-- **Server Port**: 1099 (configurable)
-- **Architecture**: Centralized broker pattern
-- **GUI Framework**: Java Swing
-- **Threading**: Multi-threaded for concurrent client handling
+1. Publishers connect to the RMI server and publish a message for a selected topic.
+2. Subscribers connect to the RMI server and subscribe to one or more topics.
+3. The server stores messages and forwards new notifications to matching subscribers.
+4. Subscriber notification windows display new messages as they arrive.
 
 ## Troubleshooting
 
-### Error Messages
-- **"Registry not found"**: Start the RMI registry before running applications
-- **"Service not found"**: Ensure the server is running and registered properly
-- **"Remote connection failed"**: Check network connectivity and firewall settings
+- If clients cannot connect, confirm `rmiregistry` and `BUEServer` are both running.
+- If classes are not found, re-run the compile command from the repository root.
+- If GUI windows do not open, run the project in an environment with desktop display support.
 
-## System Requirements
+## Scope
 
-- **Memory**: Minimum 256MB RAM
-- **Network**: Local network access for RMI communication
-- **Display**: GUI requires graphics environment for subscriber notifications
-
----
-
-**Note**: This system is designed for educational purposes and not actually used by the BUE.
+This is an educational Java RMI implementation intended to demonstrate distributed publish-subscribe messaging patterns.
